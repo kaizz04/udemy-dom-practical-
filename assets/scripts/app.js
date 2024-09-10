@@ -5,6 +5,7 @@ const cancelAddMovieButton = addMovieModel.querySelector('.btn--passive');
 const confirmAddMovieButton = cancelAddMovieButton.nextElementSibling;
 const userInputs = addMovieModel.querySelectorAll('input');
 const entryTextSection = document.getElementById('entry-text');
+const deleteMovieModel = document.getElementById('delete-modal');
 
 const movies = [];
 
@@ -18,7 +19,7 @@ const updateUI = () =>{
 
 };
 
-const deleteMovieHandler = (movieId)=>{
+const deleteMovie = movieId=>{
     let movieIndex=0;
     for(const movie of movies){
         if(movie.id === movieId){
@@ -30,6 +31,19 @@ const deleteMovieHandler = (movieId)=>{
     const listRoot = document.getElementById('movie-list');
     listRoot.children[movieIndex].remove();
     //listRoot.removeChild(listRoot.children[movieIndex]);
+};
+
+const closeMovieDeletionModel = () =>{
+    toggleBackdrop();
+    deleteMovieModel.classList.remove('visible');
+};
+
+const deleteMovieHandler = (movieId)=>{
+    
+    deleteMovieModel.classList.add('visible');
+    toggleBackdrop();
+   // deleteMovie(movieId);
+   
 };
 
 const renderNewMovieElement = (id,title,imageUrl,rating) =>{
@@ -55,9 +69,16 @@ const toggleBackdrop = ()=>{
     backdrop.classList.toggle('visible');
 };
 
-const toggleMovieModel = () =>{
+const closeMovieModal = () =>{
+    addMovieModel.classList.remove('visible');
+
+};
+
+
+
+const showMovieModal = () =>{
     clearMovieInputs();
-    addMovieModel.classList.toggle('visible')
+    addMovieModel.classList.add('visible');
     toggleBackdrop();
 };
 
@@ -69,7 +90,8 @@ const clearMovieInputs= ()=>{
 }
 
 const backdropClickHandler= () =>{
-    toggleMovieModel();
+   closeMovieModal();
+   closeMovieDeletionModel();
 };
 
 const addMovieHandler = ()=>{
@@ -96,7 +118,8 @@ const addMovieHandler = ()=>{
     
     movies.push(newMovie);
     console.log(movies);
-    toggleMovieModel();
+    closeMovieModal();
+    toggleBackdrop();
     renderNewMovieElement(newMovie.id,newMovie.title,newMovie.image,newMovie.rating);
     updateUI();
 
@@ -105,9 +128,9 @@ const addMovieHandler = ()=>{
 
 
 
-startMovieButton.addEventListener('click',toggleMovieModel);
+startMovieButton.addEventListener('click',showMovieModal);
 backdrop.addEventListener('click', backdropClickHandler);
-cancelAddMovieButton.addEventListener('click',()=>toggleMovieModel());
+cancelAddMovieButton.addEventListener('click',()=>closeMovieModal());
 confirmAddMovieButton.addEventListener('click',addMovieHandler);
 
 
