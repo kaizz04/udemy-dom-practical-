@@ -4,8 +4,35 @@ const startMovieButton = document.querySelector('header button');
 const cancelAddMovieButton = addMovieModel.querySelector('.btn--passive');
 const confirmAddMovieButton = cancelAddMovieButton.nextElementSibling;
 const userInputs = addMovieModel.querySelectorAll('input');
+const entryTextSection = document.getElementById('entry-text');
 
 const movies = [];
+
+const updateUI = () =>{
+    if(movies.length === 0){
+        entryTextSection.style.display = 'block';
+    }else{
+        entryTextSection.style.display = 'none';
+
+    }
+
+};
+
+const renderNewMovieElement = (title,imageUrl,rating) =>{
+    const newMovieElement = document.createElement('li');
+    newMovieElement.className = 'movie-element';
+    newMovieElement.innerHTML = `
+    <div class="movie-element__image">
+    <image src="${imageUrl}" alt="${title}">
+    </div>
+    <div class="movie-element__info">
+        <h2>${title}</h2>
+        <p>${rating}/5 stars</p>
+    </div>
+    `;
+    const listRoot = document.getElementById('movie-list');
+    listRoot.append(newMovieElement);
+}
 
 
 
@@ -47,13 +74,15 @@ const addMovieHandler = ()=>{
     }
     const newMovie = {
         title:titleValue,
-        Image:imageUrlValue,
+        image:imageUrlValue,
         rating:ratingValue
     };
     
     movies.push(newMovie);
     console.log(movies);
     toggleMovieModel();
+    renderNewMovieElement(newMovie.title,newMovie.image,newMovie.rating);
+    updateUI();
 
 };
 
